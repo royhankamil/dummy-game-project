@@ -23,28 +23,22 @@ public class WebViewExample : MonoBehaviour
             },
             err: (msg) => {
                 Debug.Log(string.Format("CallOnError[{0}]", msg));
+                resultTxt.text = string.Format("CallOnError[{0}]", msg);
             },
             httpErr: (msg) => {
                 Debug.Log(string.Format("CallOnHttpError[{0}]", msg));
+                resultTxt.text = string.Format("CallOnError[{0}]", msg);
             },
             started: (msg) => {
                 Debug.Log(string.Format("CallOnStarted[{0}]", msg));
+                resultTxt.text = string.Format("CallOnError[{0}]", msg);
             },
             ld: (msg) => {
                 Debug.Log(string.Format("CallOnLoaded[{0}]", msg));
-                // Akses elemen dengan ID "SIvCob" setelah halaman selesai dimuat
-                webViewObject.EvaluateJS(@"
-                    var element = document.getElementById('SIvCob');
-                    if (element) {
-                        Unity.call('RESULT:' + element.textContent);
-                    } else {
-                        Unity.call('RESULT:Element not found');
-                    }
-                ");
             },
             enableWKWebView: true);
         // Mengatur margin WebView menjadi 0 untuk menampilkan secara penuh
-        webViewObject.SetMargins(0, 0, 30, 0);
+        webViewObject.SetMargins(0, 0, 0, 500); // Menambahkan ruang kosong di bawah WebView
         webViewObject.SetVisibility(true);
 
         webViewObject.LoadURL(url);
@@ -53,5 +47,18 @@ public class WebViewExample : MonoBehaviour
     public void ChangeBG()
     {
         webViewObject.EvaluateJS("document.body.style.backgroundColor = 'red';");
+    }
+
+    public void SearchElementByClass(string className)
+    {
+        string jsCode = $@"
+            var elements = document.getElementsByClassName('{className}');
+            if (elements.length > 0) {{
+                Unity.call('RESULT:' + elements[0].textContent);
+            }} else {{
+                Unity.call('RESULT:Element not found');
+            }}
+        ";
+        webViewObject.EvaluateJS(jsCode);
     }
 }
