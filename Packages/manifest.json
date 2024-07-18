@@ -55,6 +55,15 @@
         "com.walletconnect.ui",
         "com.walletconnect.web3modal"
       ]
+    },
+    {
+      "name": "Voltstro UPM",
+      "url": "https://upm-pkgs.voltstro.dev",
+      "scopes": [
+        "dev.voltstro",
+        "org.nuget",
+        "com.cysharp.unitask"
+      ]
     }
   ]
 }
