@@ -4,6 +4,8 @@ using TMPro;
 public class WebViewExample : MonoBehaviour
 {
     [SerializeField] private string url = "https://www.google.com/";
+    [SerializeField] private string StartTeStLink = "https://terrastation.page.link";
+    [SerializeField] private string StartKeplrLink = "";
     [SerializeField] private TMP_Text resultTxt;
     private WebViewObject webViewObject;
 
@@ -12,36 +14,70 @@ public class WebViewExample : MonoBehaviour
         webViewObject = (new GameObject("WebViewObject")).AddComponent<WebViewObject>();
         webViewObject.Init(
             cb: (msg) => {
-                Debug.Log(string.Format("CallFromJS[{0}]", msg));
-                // Handle message from the web page here
-                if (msg.StartsWith("RESULT:"))
-                {
-                    string result = msg.Substring("RESULT:".Length);
-                    Debug.Log("hasil : " + result);
-                    resultTxt.text = result;
-                }
+                Debug.Log($"CallFromJS[{msg}]");
+                HandleWebViewMessage(msg);
             },
             err: (msg) => {
-                Debug.Log(string.Format("CallOnError[{0}]", msg));
-                resultTxt.text = string.Format("CallOnError[{0}]", msg);
+                Debug.LogError($"WebView Error: {msg}");
+                resultTxt.text = $"WebView Error: {msg}";
             },
             httpErr: (msg) => {
-                Debug.Log(string.Format("CallOnHttpError[{0}]", msg));
-                resultTxt.text = string.Format("CallOnError[{0}]", msg);
+                Debug.LogError($"HTTP Error: {msg}");
+                resultTxt.text = $"HTTP Error: {msg}";
             },
             started: (msg) => {
-                Debug.Log(string.Format("CallOnStarted[{0}]", msg));
-                resultTxt.text = string.Format("CallOnError[{0}]", msg);
+                Debug.Log($"WebView Started: {msg}");
+                resultTxt.text = $"WebView Started: {msg}";
+                if (msg[..StartTeStLink.Length] == StartTeStLink)
+                {
+                    Application.OpenURL(msg);
+                }
+
             },
-            ld: (msg) => {
-                Debug.Log(string.Format("CallOnLoaded[{0}]", msg));
-            },
-            enableWKWebView: true);
-        // Mengatur margin WebView menjadi 0 untuk menampilkan secara penuh
-        webViewObject.SetMargins(0, 0, 0, 500); // Menambahkan ruang kosong di bawah WebView
+            enableWKWebView: true,
+            transparent: false // Adjust transparency if needed
+        );
+
+        // Set WebView margins and visibility
+        webViewObject.SetMargins(0, 0, 0, 500); // Adjust margins as per your layout
         webViewObject.SetVisibility(true);
 
+        // Load initial URL
         webViewObject.LoadURL(url);
+
+        // Add a custom JavaScript interface to handle link clicks
+        webViewObject.EvaluateJS($@"
+            function handleExternalLink(url) {{
+                // Check if URL is an external link (mailto:, tel:, etc.)
+                if (url.startsWith('mailto:') || url.startsWith('tel:') || url.startsWith('{StartTeStLink}')) {{
+                    // Open URL using Unity's Application.OpenURL to handle external apps
+                    window.location.href = url;
+                }} else {{
+                    // Handle other URLs as needed (e.g., open in the same WebView)
+                    // Example: window.location.href = url;
+                    window.location.href = url;
+                }}
+            }}
+
+            // Intercept clicks on <a> tags to prevent default behavior
+            document.addEventListener('click', function(e) {{
+                if (e.target.tagName === 'A') {{
+                    e.preventDefault();
+                    var url = e.target.href;
+                    handleExternalLink(url);
+                }}
+            }});
+        ");
+    }
+
+    void HandleWebViewMessage(string msg)
+    {
+        if (msg.StartsWith("RESULT:"))
+        {
+            string result = msg.Substring("RESULT:".Length);
+            Debug.Log($"Result received: {result}");
+            resultTxt.text = result;
+        }
     }
 
     public void ChangeBG()
@@ -60,5 +96,10 @@ public class WebViewExample : MonoBehaviour
             }}
         ";
         webViewObject.EvaluateJS(jsCode);
+    }
+
+    public void TestLink()
+    {
+        Application.OpenURL("https://terrastation.page.link/?link=https://terra.money?action%3Dwallet_connect%26payload%3Dwc%253A672fc31d-f2cc-4b5e-8ea9-d463d293efb7%25401%253Fbridge%253Dhttps%25253A%25252F%25252Fwalletconnect.terra.dev%2526key%253D2b58e6611398736cc97bb74300f1dd4e7406035c161372f8a85a233d4e18da7a&apn=money.terra.station&ibi=money.terra.station&isi=1548434735");
     }
 }
