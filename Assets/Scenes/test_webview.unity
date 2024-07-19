@@ -3018,6 +3018,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   url: https://garuda-defi.bigbangx.io/testing-connect
+  StartTeStLink: https://terrastation.page.link
+  StartKeplrLink: 'wc:'
   resultTxt: {fileID: 1664065138}
 --- !u!4 &1565605175
 Transform:
@@ -3173,8 +3175,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 56.774, y: -734.2}
-  m_SizeDelta: {x: 809.1, y: 704.2}
+  m_AnchoredPosition: {x: 4.3, y: -734.2}
+  m_SizeDelta: {x: 902.5, y: 704.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1664065138
 MonoBehaviour:

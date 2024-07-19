@@ -82,7 +82,8 @@ public class WebViewExample : MonoBehaviour
         Debug.Log($"Opening URL: {url}");
         if (url.StartsWith(StartTeStLink) || url.StartsWith(StartKeplrLink))
         {
-            Application.OpenURL(url);
+            webViewObject.LoadURL(url);
+            // Application.OpenURL(url);
         }
     }
 
