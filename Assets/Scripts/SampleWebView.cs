@@ -106,7 +106,7 @@ public class WebViewExample : MonoBehaviour
 
     public void TestLink()
     {
-        string testUrl = "https://terrastation.page.link/?link=https://terra.money?action%3Dwallet_connect%26payload%3Dwc%253A672fc31d-f2cc-4b5e-8ea9-d463d293efb7%25401%253Fbridge%253Dhttps%25253A%25252F%25252Fwalletconnect.terra.dev%2526key%253D2b58e6611398736cc97bb74300f1dd4e7406035c161372f8a85a233d4e18da7a&apn=money.terra.station&ibi=money.terra.station&isi=1548434735";
+        string testUrl = "wc:61734b640dcd6aaa53f3a63b67f890da813f6262501dcd0b9384db87406c27f4@2?relay-protocol=irn&symKey=aa7f20d2c2b2c7053d822e9815d331f87fff8936a87348b846de35666bd/8c410";
         Debug.Log($"Testing link: {testUrl}");
         Application.OpenURL(testUrl);
     }
