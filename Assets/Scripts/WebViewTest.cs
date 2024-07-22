@@ -15,16 +15,16 @@ public class WebViewTest : MonoBehaviour
             {
                 style = GpmWebViewStyle.FULLSCREEN,
                 orientation = GpmOrientation.UNSPECIFIED,
-                isClearCookie = true,
-                isClearCache = true,
+                isClearCookie = false,
+                isClearCache = false,
                 backgroundColor = "#FFFFFF",
                 isNavigationBarVisible = true,
                 navigationBarColor = "#4B96E6",
-                title = "The page title.",
+                title = "connect wallet.",
                 isBackButtonVisible = true,
                 isForwardButtonVisible = true,
                 isCloseButtonVisible = true,
-                supportMultipleWindows = true,
+                supportMultipleWindows = false,
     #if UNITY_IOS
                 contentMode = GpmWebViewContentMode.MOBILE
     #endif
