@@ -34,12 +34,13 @@ public class WebViewExample : MonoBehaviour
             transparent: false // Adjust transparency if needed
         );
 
+
         // Set WebView margins and visibility
         webViewObject.SetMargins(0, 0, 0, 500); // Adjust margins as per your layout
         webViewObject.SetVisibility(true);
 
         // Load initial URL
-        webViewObject.LoadURL(url);
+        webViewObject.LoadURL(url.Replace(" ", "%20"));
 
         // Add a custom JavaScript interface to handle link clicks
         webViewObject.EvaluateJS($@"
@@ -82,8 +83,8 @@ public class WebViewExample : MonoBehaviour
         Debug.Log($"Opening URL: {url}");
         if (url.StartsWith(StartTeStLink) || url.StartsWith(StartKeplrLink))
         {
-            webViewObject.LoadURL(url);
-            // Application.OpenURL(url);
+            webViewObject.LoadURL(url.Replace(" ", "%20"));
+            Application.OpenURL(url.Replace(" ", "%20"));
         }
     }
 
